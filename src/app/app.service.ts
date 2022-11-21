@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { promises as fs } from 'fs';
-// import * as sharp from 'sharp';
+import * as sharp from 'sharp';
 import { generateAsync } from 'stability-client';
 import GenerateImagesDto from './dtos/generate-images.dto';
 import GenerateImagesResponse from './interfaces/generate-images.interface';
@@ -17,10 +16,12 @@ export class AppService {
         try {
             const res: any = await generateAsync({
                 prompt: dto.prompt,
+                steps: 40,
                 width: dto.width,
                 height: dto.height,
                 samples: dto.number,
                 apiKey: process.env.DREAMSTUDIO_API_KEY,
+                noStore: true,
             });
 
             if (!res.res || !res.res.isOk) {
@@ -38,7 +39,7 @@ export class AppService {
             const readPromises = [];
 
             for (const image of res.images) {
-                readPromises.push(this.readBase64(image.filePath));
+                readPromises.push(this.readBase64(image.buffer));
             }
 
             try {
@@ -56,22 +57,6 @@ export class AppService {
                 throw new InternalServerErrorException(e);
             }
 
-            const deletePromises = [];
-
-            for (const image of res.images) {
-                deletePromises.push(fs.unlink(image.filePath));
-            }
-
-            try {
-                console.log('Awaiting delete promises.');
-                await Promise.all(deletePromises);
-            } catch (e) {
-                console.error(e);
-                for (const image of res.images) {
-                    console.error(image.filePath);
-                }
-            }
-
             return { base64Data };
         } catch (e) {
             console.error(e);
@@ -79,12 +64,12 @@ export class AppService {
         }
     }
 
-    async readBase64(path: string): Promise<string | undefined> {
+    async readBase64(buffer: Buffer): Promise<string | undefined> {
         try {
-            const base64 = await fs.readFile(path, 'base64');
-            return base64;
+            const webpBuffer = await sharp(buffer).webp({ lossless: true }).toBuffer();
+            return webpBuffer.toString('base64');
         } catch (e) {
-            console.log('Could not read base64 at path', path);
+            console.error(e);
             return undefined;
         }
     }
