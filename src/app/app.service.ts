@@ -11,7 +11,8 @@ export class AppService {
     }
 
     async generateImages(dto: GenerateImagesDto): Promise<GenerateImagesResponse> {
-        console.log('received request for ', dto);
+        console.log('NEW REQUEST');
+        console.log(dto);
 
         try {
             const res: any = await generateAsync({
@@ -43,9 +44,7 @@ export class AppService {
             }
 
             try {
-                console.log('Awaiting read promises.');
                 const data = await Promise.all(readPromises);
-                console.log(data);
 
                 for (const base64 of data) {
                     if (base64) {
