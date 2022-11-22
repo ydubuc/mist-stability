@@ -61,7 +61,7 @@ export class AppService {
     async readImageData(image: any): Promise<GenerateImageData | undefined> {
         try {
             const base64 = await this.readBase64(image.buffer);
-            const seed = image.seed;
+            const seed = image.seed.toString();
 
             return {
                 base64,
