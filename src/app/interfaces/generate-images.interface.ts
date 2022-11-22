@@ -1,3 +1,8 @@
 export default interface GenerateImagesResponse {
-    base64Data: string[];
+    data: GenerateImageData[];
+}
+
+export interface GenerateImageData {
+    base64: string;
+    seed: string;
 }

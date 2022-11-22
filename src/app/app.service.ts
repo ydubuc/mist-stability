@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import * as sharp from 'sharp';
 import { generateAsync } from 'stability-client';
 import GenerateImagesDto from './dtos/generate-images.dto';
-import GenerateImagesResponse from './interfaces/generate-images.interface';
+import GenerateImagesResponse, { GenerateImageData } from './interfaces/generate-images.interface';
 
 @Injectable()
 export class AppService {
@@ -25,30 +25,25 @@ export class AppService {
                 noStore: true,
             });
 
-            if (!res.res || !res.res.isOk) {
-                console.error('Response was not ok.');
-                throw new InternalServerErrorException('Response was not ok.');
-            }
-
             if (!res.images || !res.images.length) {
                 console.error('No images were generated.');
                 throw new InternalServerErrorException('No images were generated.');
             }
 
-            const base64Data: string[] = [];
-
-            const readPromises = [];
+            const promises = [];
 
             for (const image of res.images) {
-                readPromises.push(this.readBase64(image.buffer));
+                promises.push(this.readImageData(image));
             }
 
-            try {
-                const data = await Promise.all(readPromises);
+            const data: GenerateImageData[] = [];
 
-                for (const base64 of data) {
-                    if (base64) {
-                        base64Data.push(base64);
+            try {
+                const generateImagesData = await Promise.all(promises);
+
+                for (const generateImageData of generateImagesData) {
+                    if (generateImageData) {
+                        data.push(generateImageData);
                     }
                 }
             } catch (e) {
@@ -56,10 +51,24 @@ export class AppService {
                 throw new InternalServerErrorException(e);
             }
 
-            return { base64Data };
+            return { data };
         } catch (e) {
             console.error(e);
             throw new InternalServerErrorException(e);
+        }
+    }
+
+    async readImageData(image: any): Promise<GenerateImageData | undefined> {
+        try {
+            const base64 = await this.readBase64(image.buffer);
+            const seed = image.seed;
+
+            return {
+                base64,
+                seed,
+            };
+        } catch (e) {
+            return undefined;
         }
     }
 
