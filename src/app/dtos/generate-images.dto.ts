@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, Max, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
 
 export default class GenerateImagesDto {
     @IsNotEmpty()
@@ -20,4 +20,10 @@ export default class GenerateImagesDto {
     @IsNumber()
     @Max(4)
     number: number;
+
+    @IsOptional()
+    @IsNumber()
+    @Min(30)
+    @Max(100)
+    steps: number;
 }

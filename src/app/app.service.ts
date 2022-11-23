@@ -11,13 +11,10 @@ export class AppService {
     }
 
     async generateImages(dto: GenerateImagesDto): Promise<GenerateImagesResponse> {
-        console.log('NEW REQUEST');
-        console.log(dto);
-
         try {
             const res: any = await generateAsync({
                 prompt: dto.prompt,
-                steps: 40,
+                steps: dto.steps ?? 50,
                 width: dto.width,
                 height: dto.height,
                 samples: dto.number,
