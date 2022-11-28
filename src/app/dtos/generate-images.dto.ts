@@ -1,4 +1,13 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, Max, MaxLength, Min } from 'class-validator';
+import {
+    IsIn,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    Max,
+    MaxLength,
+    Min,
+} from 'class-validator';
 
 export default class GenerateImagesDto {
     @IsNotEmpty()
@@ -24,6 +33,18 @@ export default class GenerateImagesDto {
     @IsOptional()
     @IsNumber()
     @Min(30)
-    @Max(100)
+    @Max(50)
     steps: number;
+
+    @IsOptional()
+    @IsString()
+    @IsIn([
+        'stable-diffusion-v1',
+        'stable-diffusion-v1-5',
+        'stable-diffusion-512-v2-0',
+        'stable-diffusion-768-v2-0',
+        // 'stable-inpainting-v1-0',
+        // 'stable-inpainting-512-v2-0',
+    ])
+    engine: string;
 }

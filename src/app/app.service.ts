@@ -18,6 +18,7 @@ export class AppService {
                 width: dto.width,
                 height: dto.height,
                 samples: dto.number,
+                engine: dto.engine ?? 'stable-diffusion-512-v2-0',
                 apiKey: process.env.DREAMSTUDIO_API_KEY,
                 noStore: true,
             });
