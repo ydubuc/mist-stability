@@ -72,7 +72,9 @@ export class AppService {
 
     async readBase64(buffer: Buffer): Promise<string | undefined> {
         try {
-            const webpBuffer = await sharp(buffer).webp({ lossless: true }).toBuffer();
+            const webpBuffer = await sharp(buffer)
+                .webp({ quality: 80, lossless: false })
+                .toBuffer();
             return webpBuffer.toString('base64');
         } catch (e) {
             console.error(e);
