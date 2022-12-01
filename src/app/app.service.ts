@@ -18,7 +18,7 @@ export class AppService {
                 width: dto.width,
                 height: dto.height,
                 samples: dto.number,
-                engine: dto.engine ?? 'stable-diffusion-512-v2-0',
+                engine: dto.engine ?? 'stable-diffusion-v1-5',
                 apiKey: process.env.DREAMSTUDIO_API_KEY,
                 noStore: true,
             });
@@ -46,13 +46,14 @@ export class AppService {
                 }
             } catch (e) {
                 console.error(e);
-                throw new InternalServerErrorException(e);
+                throw new InternalServerErrorException({ cause: e });
             }
 
             return { data };
         } catch (e) {
+            console.log(dto);
             console.error(e);
-            throw new InternalServerErrorException(e);
+            throw new InternalServerErrorException({ cause: e });
         }
     }
 
