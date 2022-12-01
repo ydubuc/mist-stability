@@ -51,9 +51,9 @@ export class AppService {
 
             return { data };
         } catch (e) {
-            console.log(dto);
+            console.error(dto);
             console.error(e);
-            throw new InternalServerErrorException({ cause: e });
+            throw new InternalServerErrorException({ cause: e.toString() });
         }
     }
 
