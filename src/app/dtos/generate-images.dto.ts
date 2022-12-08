@@ -27,12 +27,12 @@ export default class GenerateImagesDto {
 
     @IsNotEmpty()
     @IsNumber()
-    @Max(4)
+    @Max(8)
     number: number;
 
     @IsOptional()
     @IsNumber()
-    @Min(30)
+    @Min(20)
     @Max(50)
     steps: number;
 
@@ -43,6 +43,8 @@ export default class GenerateImagesDto {
         'stable-diffusion-v1-5',
         'stable-diffusion-512-v2-0',
         'stable-diffusion-768-v2-0',
+        'stable-diffusion-512-v2-1',
+        'stable-diffusion-768-v2-1',
         // 'stable-inpainting-v1-0',
         // 'stable-inpainting-512-v2-0',
     ])

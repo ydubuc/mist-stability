@@ -21,6 +21,14 @@ export class AppService {
                 engine: dto.engine ?? 'stable-diffusion-v1-5',
                 apiKey: process.env.DREAMSTUDIO_API_KEY,
                 noStore: true,
+                // imagePrompt: {
+                //     mime: string;
+                //     content: Buffer;
+                //     mask?: {
+                //         mime: string;
+                //         content: Buffer;
+                //     },
+                // }
             });
 
             if (!res.images || !res.images.length) {
