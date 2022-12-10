@@ -4,6 +4,7 @@ import {
     IsNumber,
     IsOptional,
     IsString,
+    IsUrl,
     Max,
     MaxLength,
     Min,
@@ -14,6 +15,17 @@ export default class GenerateImagesDto {
     @IsString()
     @MaxLength(1000)
     prompt: string;
+
+    // @IsOptional()
+    // @IsString()
+    // @MaxLength(1000)
+    // negative_prompt: string;
+
+    @IsOptional()
+    @IsNumber()
+    @Min(1)
+    @Max(20)
+    cfg_scale: number;
 
     @IsNotEmpty()
     @IsNumber()
@@ -35,6 +47,10 @@ export default class GenerateImagesDto {
     @Min(20)
     @Max(50)
     steps: number;
+
+    @IsOptional()
+    @IsUrl()
+    input_image_url: string;
 
     @IsOptional()
     @IsString()
