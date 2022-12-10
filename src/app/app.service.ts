@@ -1,8 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import * as sharp from 'sharp';
+import fetch from 'node-fetch';
 import { generateAsync } from 'stability-client';
 import GenerateImagesDto from './dtos/generate-images.dto';
 import GenerateImagesResponse, { GenerateImageData } from './interfaces/generate-images.interface';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const sharp = require('sharp');
 
 @Injectable()
 export class AppService {
