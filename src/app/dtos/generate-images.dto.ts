@@ -16,17 +16,6 @@ export default class GenerateImagesDto {
     @MaxLength(1000)
     prompt: string;
 
-    // @IsOptional()
-    // @IsString()
-    // @MaxLength(1000)
-    // negative_prompt: string;
-
-    @IsOptional()
-    @IsNumber()
-    @Min(1)
-    @Max(20)
-    cfg_scale: number;
-
     @IsNotEmpty()
     @IsNumber()
     @Max(1024)
@@ -43,10 +32,21 @@ export default class GenerateImagesDto {
     number: number;
 
     @IsOptional()
+    @IsString()
+    @MaxLength(1000)
+    negative_prompt: string;
+
+    @IsOptional()
     @IsNumber()
     @Min(20)
     @Max(50)
     steps: number;
+
+    @IsOptional()
+    @IsNumber()
+    @Min(1)
+    @Max(20)
+    cfg_scale: number;
 
     @IsOptional()
     @IsUrl()

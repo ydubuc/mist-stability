@@ -9,6 +9,7 @@ const sharp = require('sharp');
 @Injectable()
 export class AppService {
     async ping(): Promise<void> {
+        console.log(process.env.NODE_APP_INSTANCE);
         return;
     }
 
